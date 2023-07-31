@@ -1,4 +1,5 @@
 use std::path::PathBuf;
+use rust_xlsxwriter::*;
 
 use crate::controller::report::{read_report, save_report_list};
 use crate::model::{Model, Report};
@@ -10,7 +11,7 @@ pub enum Event {
     View(view::Message),
     System(iced::Event),
     Loaded(PathBuf, Report),
-    Saved,
+    Saved(Result<(), XlsxError>),
 }
 
 pub struct App {
@@ -80,11 +81,15 @@ impl Application for App {
                         .map(|(_, r)| r.clone())
                         .collect(),
                 ),
-                |_| Event::Saved,
+                Event::Saved,
             ),
 
-            Saved => {
+            Saved(Ok(())) => {
                 self.model.saved = true;
+                Command::none()
+            }
+            Saved(Err(error)) => {
+                println!("{}", error);
                 Command::none()
             }
             Loaded(path, report) => {

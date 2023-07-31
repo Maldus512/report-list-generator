@@ -12,3 +12,4 @@ iced_futures = "*"
 iced_aw = {version="0.5.1", features=["spinner"]}
 tokio = {version="1.29.1", features=["fs", "io-util"]}
 native-dialog = "0.6.4"
+rust_xlsxwriter = "0.43.0"
